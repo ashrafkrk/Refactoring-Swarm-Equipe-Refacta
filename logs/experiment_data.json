@@ -20,5 +20,18 @@
             "output_response": "Ready"
         },
         "status": "SUCCESS"
+    },
+    {
+        "id": "bc930032-baaf-4efc-b05a-b283b3b95b57",
+        "timestamp": "2026-01-27T12:26:06.673424",
+        "agent": "System",
+        "model": "models/gemini-flash-latest",
+        "action": "DEBUG",
+        "details": {
+            "info": "Target: sandbox",
+            "input_prompt": "System Init",
+            "output_response": "Ready"
+        },
+        "status": "SUCCESS"
     }
 ]

@@ -1,11 +1,23 @@
 import argparse
 import sys
 import os
+import google.generativeai as genai  # <--- NEW IMPORT
 from dotenv import load_dotenv
-# We must import ActionType to satisfy the strict logger
-from src.utils.logger import log_experiment, ActionType 
+from src.utils.logger import log_experiment, ActionType
 
 load_dotenv()
+
+# --- 1. SETUP GEMINI (The part we just tested) ---
+api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    print("❌ CRITICAL ERROR: API Key missing.")
+    sys.exit(1)
+
+genai.configure(api_key=api_key)
+# We use the specific alias that worked for you:
+MODEL_NAME = 'models/gemini-flash-latest' 
+model = genai.GenerativeModel(MODEL_NAME)
+# -------------------------------------------------
 
 def main():
     parser = argparse.ArgumentParser()
@@ -17,25 +29,21 @@ def main():
         sys.exit(1)
 
     print(f"🚀 DEMARRAGE SUR : {args.target_dir}")
-    
-    # --- CORRECTED LOGGING CALL ---
-    # The logger is strict. We must provide all 5 arguments.
-    # We use ActionType.DEBUG because 'STARTUP' is not a valid action.
+
+    # Log the startup success
     log_experiment(
         agent_name="System",
-        model_used="Setup",     # Just a label
-        action=ActionType.DEBUG, # Must be a valid Enum
+        model_used=MODEL_NAME, # Logs the correct model
+        action=ActionType.DEBUG,
         details={
             "info": f"Target: {args.target_dir}",
-            # These 2 keys are MANDATORY for ActionType.DEBUG or the logger crashes again
-            "input_prompt": "System Init", 
+            "input_prompt": "System Init",
             "output_response": "Ready"
         },
         status="SUCCESS"
     )
-    # ------------------------------
 
-    print("✅ MISSION_COMPLETE")
+    print("✅ MISSION_COMPLETE (System Ready)")
 
 if __name__ == "__main__":
     main()
