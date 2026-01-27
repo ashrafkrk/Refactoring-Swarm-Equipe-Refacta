@@ -1,11 +1,24 @@
 [
-  {
-    "id": "9e82e9b0-9b43-4a78-af43-d5d5ef848a2f",
-    "timestamp": "2025-12-26T01:26:41.177789",
-    "agent": "System",
-    "model": "unknown",
-    "action": "STARTUP",
-    "details": "Target: ./sandbox",
-    "status": "INFO"
-  }
+    {
+        "id": "9e82e9b0-9b43-4a78-af43-d5d5ef848a2f",
+        "timestamp": "2025-12-26T01:26:41.177789",
+        "agent": "System",
+        "model": "unknown",
+        "action": "STARTUP",
+        "details": "Target: ./sandbox",
+        "status": "INFO"
+    },
+    {
+        "id": "bb72c99c-b4d3-48cd-81a3-85692c04ab53",
+        "timestamp": "2026-01-27T11:40:55.026762",
+        "agent": "System",
+        "model": "Setup",
+        "action": "DEBUG",
+        "details": {
+            "info": "Target: sandbox",
+            "input_prompt": "System Init",
+            "output_response": "Ready"
+        },
+        "status": "SUCCESS"
+    }
 ]
