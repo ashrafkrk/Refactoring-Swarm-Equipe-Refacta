@@ -1,4 +1,5 @@
 import os
+import ast
 
 # Files we want to refactor
 ALLOWED_EXTENSIONS = {'.py', '.java', '.c', '.cpp', '.js', '.ts', '.html', '.css'}
@@ -57,3 +58,26 @@ def save_file_content(file_path, new_content):
     except Exception as e:
         print(f"❌ Error saving {file_path}: {e}")
         return False
+
+
+
+def check_syntax(file_path):
+    """
+    The Judge: Checks if the code is valid Python.
+    Returns: (True, None) if valid.
+    Returns: (False, error_message) if invalid.
+    """
+    try:
+        content = read_file_content(file_path)
+        if not content:
+            return False, "Empty file"
+            
+        # Attempt to parse the code (compilation check)
+        ast.parse(content)
+        return True, None
+    except SyntaxError as e:
+        error_msg = f"Syntax Error on line {e.lineno}: {e.msg}"
+        print(f"   ❌ JUDGE SAYS: {error_msg}")
+        return False, error_msg
+    except Exception as e:
+        return False, str(e)
