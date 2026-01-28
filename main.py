@@ -2,11 +2,11 @@ import argparse
 import sys
 import os
 import google.generativeai as genai
+from google.generativeai.types import HarmCategory, HarmBlockThreshold
 from dotenv import load_dotenv
 
 # --- CUSTOM MODULES ---
 from src.utils.logger import log_experiment, ActionType
-# IMPORTANT: On importe check_syntax maintenant !
 from src.tools.toolbox import scan_directory, read_file_content, save_file_content, check_syntax
 from src.prompts.instructions import SYSTEM_ROLE, ANALYSIS_TEMPLATE, REFACTOR_TEMPLATE
 
@@ -22,8 +22,30 @@ genai.configure(api_key=api_key)
 MODEL_NAME = 'models/gemini-flash-latest'
 model = genai.GenerativeModel(MODEL_NAME)
 
+# --- SAFETY SETTINGS (CRITICAL FOR CODE ANALYSIS) ---
+# We disable safety filters because analyzing buggy/virus code triggers false positives.
+safety_settings = {
+    HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
+    HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
+    HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
+    HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
+}
+
+def get_response_text(response):
+    """Safely extracts text from Gemini response to prevent crashes."""
+    try:
+        return response.text
+    except ValueError:
+        # If blocked or complex response, try to get parts or return empty
+        if response.candidates:
+            parts = response.candidates[0].content.parts
+            if parts:
+                return parts[0].text
+        return ""
+
 def clean_ai_response(text):
-    """Nettoie les balises Markdown du code généré."""
+    """Cleans Markdown tags from generated code."""
+    if not text: return ""
     clean = text.replace("```python", "").replace("```", "").strip()
     return clean
 
@@ -37,9 +59,15 @@ def process_file(file_path):
     try:
         print("   👀 Agent Auditor: Analyzing...")
         analysis_prompt = ANALYSIS_TEMPLATE.format(code_content=original_code)
-        response = model.generate_content(analysis_prompt)
-        analysis_result = response.text
         
+        # Added safety_settings here
+        response = model.generate_content(analysis_prompt, safety_settings=safety_settings)
+        analysis_result = get_response_text(response)
+        
+        if not analysis_result:
+            print("   ⚠️  Auditor: Response blocked by safety filters.")
+            return
+
         log_experiment(
             agent_name="Auditor_Agent",
             model_used=MODEL_NAME,
@@ -47,7 +75,7 @@ def process_file(file_path):
             details={
                 "file": file_path, 
                 "input_prompt": "Analyze Code Issues", 
-                "output_response": analysis_result
+                "output_response": analysis_result[:100] + "..." # Log summary only
             },
             status="SUCCESS"
         )
@@ -67,7 +95,6 @@ def process_file(file_path):
         try:
             print("   🛠️  Agent Fixer: Working...")
             
-            # On construit le prompt (soit fix normal, soit fix d'erreur)
             if error_context:
                 prompt = f"{SYSTEM_ROLE}\nFIX THIS ERROR:\n{error_context}\n\nIN CODE:\n{current_code}"
                 prompt_log = f"Fix Error from Attempt {attempt-1}"
@@ -75,14 +102,17 @@ def process_file(file_path):
                 prompt = f"{SYSTEM_ROLE}\n{REFACTOR_TEMPLATE.format(code_content=original_code)}"
                 prompt_log = "Refactor Code (Standard)"
 
-            response = model.generate_content(prompt)
-            new_code = clean_ai_response(response.text)
+            # Added safety_settings here
+            response = model.generate_content(prompt, safety_settings=safety_settings)
+            new_code = clean_ai_response(get_response_text(response))
             
-            # Sauvegarde pour test
+            if not new_code:
+                print("   ❌ Fixer Error: Empty response (Safety Block?). Retrying...")
+                continue
+
             save_file_content(file_path, new_code)
             current_code = new_code
 
-            # LOG OBLIGATOIRE
             log_experiment(
                 agent_name="Fixer_Agent",
                 model_used=MODEL_NAME,
@@ -90,8 +120,8 @@ def process_file(file_path):
                 details={
                     "file": file_path, 
                     "attempt": attempt, 
-                    "input_prompt": prompt_log,        # <--- AJOUTÉ
-                    "output_response": "Code Generated" # <--- AJOUTÉ
+                    "input_prompt": prompt_log,
+                    "output_response": "Code Generated"
                 },
                 status="SUCCESS"
             )
@@ -106,7 +136,6 @@ def process_file(file_path):
 
         if is_valid:
             print("   ✅ JUDGE: Code is valid. Improvement accepted.")
-            # LOG SUCCESS
             log_experiment(
                 agent_name="Judge_Agent",
                 model_used="System-Compiler",
@@ -114,18 +143,16 @@ def process_file(file_path):
                 details={
                     "file": file_path, 
                     "result": "PASS",
-                    "input_prompt": "Syntax Check",   # <--- AJOUTÉ
-                    "output_response": "Valid Syntax" # <--- AJOUTÉ
+                    "input_prompt": "Syntax Check",
+                    "output_response": "Valid Syntax"
                 },
                 status="SUCCESS"
             )
-            break # On sort de la boucle, c'est gagné !
+            break
         else:
-            # TEST FAILED
             print(f"   ⚠️ JUDGE: Check failed! Sending back to Fixer...")
             error_context = f"The previous code had a Syntax Error: {error_msg}. Fix it immediately."
             
-            # LOG FAILURE
             log_experiment(
                 agent_name="Judge_Agent",
                 model_used="System-Compiler",
@@ -134,8 +161,8 @@ def process_file(file_path):
                     "file": file_path, 
                     "result": "FAIL", 
                     "error": error_msg,
-                    "input_prompt": "Syntax Check",     # <--- AJOUTÉ
-                    "output_response": f"Error: {error_msg}" # <--- AJOUTÉ
+                    "input_prompt": "Syntax Check",
+                    "output_response": f"Error: {error_msg}"
                 },
                 status="FAILED"
             )
