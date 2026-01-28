@@ -58,9 +58,9 @@ def process_file(file_path):
     # --- 1. ANALYSIS (L'Auditeur) ---
     try:
         print("   👀 Agent Auditor: Analyzing...")
+        # We capture the EXACT text sent to the AI
         analysis_prompt = ANALYSIS_TEMPLATE.format(code_content=original_code)
         
-        # Added safety_settings here
         response = model.generate_content(analysis_prompt, safety_settings=safety_settings)
         analysis_result = get_response_text(response)
         
@@ -74,8 +74,8 @@ def process_file(file_path):
             action=ActionType.ANALYSIS,
             details={
                 "file": file_path, 
-                "input_prompt": "Analyze Code Issues", 
-                "output_response": analysis_result[:100] + "..." # Log summary only
+                "input_prompt": analysis_prompt,  # <--- UPDATED: Logs the FULL prompt
+                "output_response": analysis_result[:500] + "..." # Truncate output to keep log readable, or keep full if you prefer
             },
             status="SUCCESS"
         )
@@ -97,17 +97,14 @@ def process_file(file_path):
             
             if error_context:
                 prompt = f"{SYSTEM_ROLE}\nFIX THIS ERROR:\n{error_context}\n\nIN CODE:\n{current_code}"
-                prompt_log = f"Fix Error from Attempt {attempt-1}"
             else:
                 prompt = f"{SYSTEM_ROLE}\n{REFACTOR_TEMPLATE.format(code_content=original_code)}"
-                prompt_log = "Refactor Code (Standard)"
 
-            # Added safety_settings here
             response = model.generate_content(prompt, safety_settings=safety_settings)
             new_code = clean_ai_response(get_response_text(response))
             
             if not new_code:
-                print("   ❌ Fixer Error: Empty response (Safety Block?). Retrying...")
+                print("   ❌ Fixer Error: Empty response. Retrying...")
                 continue
 
             save_file_content(file_path, new_code)
@@ -120,8 +117,8 @@ def process_file(file_path):
                 details={
                     "file": file_path, 
                     "attempt": attempt, 
-                    "input_prompt": prompt_log,
-                    "output_response": "Code Generated"
+                    "input_prompt": prompt, # <--- UPDATED: Logs the FULL prompt
+                    "output_response": "Code Generated (See file content)"
                 },
                 status="SUCCESS"
             )
@@ -143,7 +140,7 @@ def process_file(file_path):
                 details={
                     "file": file_path, 
                     "result": "PASS",
-                    "input_prompt": "Syntax Check",
+                    "input_prompt": f"check_syntax('{file_path}')", # Internal function call
                     "output_response": "Valid Syntax"
                 },
                 status="SUCCESS"
@@ -161,7 +158,7 @@ def process_file(file_path):
                     "file": file_path, 
                     "result": "FAIL", 
                     "error": error_msg,
-                    "input_prompt": "Syntax Check",
+                    "input_prompt": f"check_syntax('{file_path}')",
                     "output_response": f"Error: {error_msg}"
                 },
                 status="FAILED"
@@ -170,7 +167,7 @@ def process_file(file_path):
             if attempt == MAX_RETRIES:
                 print("   ❌ Maximum retries reached. Reverting file.")
                 save_file_content(file_path, original_code)
-
+                
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--target_dir", type=str, required=True, help="Path to the folder to refactor")

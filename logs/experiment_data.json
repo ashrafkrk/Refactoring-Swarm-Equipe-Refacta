@@ -22,365 +22,248 @@
         "status": "SUCCESS"
     },
     {
-        "id": "bc930032-baaf-4efc-b05a-b283b3b95b57",
-        "timestamp": "2026-01-27T12:26:06.673424",
-        "agent": "System",
-        "model": "models/gemini-flash-latest",
-        "action": "DEBUG",
-        "details": {
-            "info": "Target: sandbox",
-            "input_prompt": "System Init",
-            "output_response": "Ready"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "9d4b7817-321c-42b9-80cc-725fa5dddf7c",
-        "timestamp": "2026-01-28T10:25:58.312659",
-        "agent": "Data_Officer_Test",
-        "model": "Test-Model-1.0",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file_analyzed": "test_file.py",
-            "input_prompt": "System Check",
-            "output_response": "System OK"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "2d5fdb36-bbab-4e9a-9d5d-bcf3c301e5c4",
-        "timestamp": "2026-01-28T10:29:27.983686",
-        "agent": "Data_Officer_Verified",
-        "model": "Test-Model-1.0",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file_analyzed": "test_file.py",
-            "input_prompt": "System Check",
-            "output_response": "System OK"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "8597464c-fcfb-47d3-917f-1cb3ebfde3d6",
-        "timestamp": "2026-01-28T11:06:37.707643",
-        "agent": "Analyst_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file": "./sandbox/bad_code/dirty.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "**Critical Issues & Bugs**\n1.  **Side Effect in Calculation:** The function `calc` prints output (`\"calculating...\"`). Functions designed purely for calculation should typically avoid side effects like printing, violating the Single Responsibility Principle (SRP).\n2.  **No Bugs:** The code is functionally correct for addition.\n\n**Style Violations (PEP 8)**\n1.  **L2: Excessive Whitespace (E203):** Too many spaces inside the `print` call (`print(  \"calculating...\" )`).\n2.  **L3: Excessive Whitespace (E231/E225):** Poor spacing inside the function call arguments (`calc( 10,  20 )`). Specifically, spaces after the opening parenthesis, before the closing parenthesis, and excessive space after the comma.\n3.  **L1: Abbreviation:** The function name `calc` is overly abbreviated; `calculate` or `add` would be more descriptive. (Minor)."
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "98475f66-70ec-4785-a4a2-3676587564ad",
-        "timestamp": "2026-01-28T11:06:45.494615",
-        "agent": "Refactor_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "FIX",
-        "details": {
-            "file": "./sandbox/bad_code/dirty.py",
-            "input_prompt": "Refactor Code (Strict Mode)",
-            "output_response": "Code replaced with refactored version."
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "c1e226f4-25a5-4494-aff5-9c709896fbc2",
-        "timestamp": "2026-01-28T11:24:47.802962",
-        "agent": "Auditor_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file": "./sandbox/bad_code/dirty.py",
-            "input_prompt": "Analyze",
-            "output_response": "**Critical Issues (Security, Stability):**\n\n*   None. The function is trivial, logically sound, and correctly implements integer addition.\n\n**Bugs (Logical Errors, Incorrect Functionality):**\n\n*   None.\n\n**Style Violations (PEP 8, Readability, Conventions):**\n\n1.  **Missing Execution Guard:** The script executes top-level code (`print(\"Calculating sum...\")`, function call) immediately. This code block should be wrapped inside an `if __name__ == \"__main__\":` block to prevent execution when the file is imported as a module.\n2.  **Unnecessary Verbose Comment:** The long, historical comment (`# NOTE: Legacy logging...`) inside the function body is distracting for a one-line function and pertains to code history, which should be managed by version control, not inline comments.\n3.  **Docstring Formatting:** While the docstring is generally good, the parameter documentation style (`a: The first integer operand.`) is missing standard explicit roles (e.g., `:param a:`) if strictly following common Sphinx/reST formats."
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "02cf5eea-81f3-43a9-b8f1-b7d122a27568",
-        "timestamp": "2026-01-28T11:27:50.315276",
-        "agent": "Auditor_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file": "./sandbox/bad_code/dirty.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "**Bugs:**\n1.  None. The code is functionally correct and performs the intended calculation.\n\n**Critical Issues:**\n1.  None. The code is safe, uses standard practices (type hinting, `if __name__` guard), and lacks side effects.\n\n**Style and Clarity Violations:**\n1.  **Over-documentation/Verbosity:** The docstring and internal comments in `calculate_sum` are excessively detailed and descriptive for a trivial, single-line addition function (e.g., describing O(1) complexity, discussing side effects). This violates the principle of keeping documentation commensurate with complexity.\n2.  **Unnecessary Comments:** The comment within `calculate_sum` regarding \"Performance is optimal (O(1))\" provides obvious information and adds noise.\n3.  **Verbose Variable Naming (Minor):** The suffix `_val` in variables like `x_val` and `y_val` in the `main` function is redundant for simple placeholder variables."
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "8925823f-c4de-4c65-b652-4c8c49b15e55",
-        "timestamp": "2026-01-28T11:27:57.701105",
-        "agent": "Fixer_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "FIX",
-        "details": {
-            "file": "./sandbox/bad_code/dirty.py",
-            "attempt": 1,
-            "input_prompt": "Refactor Code (Standard)",
-            "output_response": "Code Generated"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "438d4bc0-dbdb-4da6-834f-c6264af51ef4",
-        "timestamp": "2026-01-28T11:27:57.739844",
-        "agent": "Judge_Agent",
-        "model": "System-Compiler",
-        "action": "DEBUG",
-        "details": {
-            "file": "./sandbox/bad_code/dirty.py",
-            "result": "PASS",
-            "input_prompt": "Syntax Check",
-            "output_response": "Valid Syntax"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "770e63b3-0196-4554-b856-27b16ecd00bb",
-        "timestamp": "2026-01-28T12:18:00.843303",
-        "agent": "Auditor_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file": "./sandbox/final_test/trap.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "## Critical Issues and Bugs\n\n1.  **Critical Syntax Error (Indentation):** The function body (`return x * x`) is not indented, resulting in an `IndentationError` or `SyntaxError` when the file is parsed. Python requires a consistent indentation level for code blocks (like function bodies).\n\n## Style and Maintainability Violations (PEP 8)\n\n1.  **Missing Docstring:** The function lacks a docstring, which is necessary for documenting its purpose, arguments, and return value.\n2.  **Misleading Naming:** The function name `dangerous_math` is overly dramatic and misleading for the simple mathematical operation of squaring a number.\n3.  **Whitespace Abuse:** There is unnecessary whitespace immediately inside the parentheses of the `print` function call (`print( dangerous_math(5) )`). (PEP 8 recommends against excessive internal whitespace)."
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "d63d2eee-62d6-4d76-bdea-a0ae3fba0126",
-        "timestamp": "2026-01-28T12:18:03.824041",
-        "agent": "Fixer_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "FIX",
-        "details": {
-            "file": "./sandbox/final_test/trap.py",
-            "attempt": 1,
-            "input_prompt": "Refactor Code (Standard)",
-            "output_response": "Code Generated"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "6935ee17-91d9-486f-958e-f69ed881a440",
-        "timestamp": "2026-01-28T12:18:03.864360",
-        "agent": "Judge_Agent",
-        "model": "System-Compiler",
-        "action": "DEBUG",
-        "details": {
-            "file": "./sandbox/final_test/trap.py",
-            "result": "PASS",
-            "input_prompt": "Syntax Check",
-            "output_response": "Valid Syntax"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "c9ab0a49-175d-4f12-a696-7920e5bc19b8",
-        "timestamp": "2026-01-28T12:26:00.851061",
+        "id": "9f8875a1-d234-4bb1-bb1c-ff3b8e5ec722",
+        "timestamp": "2026-01-28T13:08:20.165323",
         "agent": "Auditor_Agent",
         "model": "models/gemini-flash-latest",
         "action": "CODE_ANALYSIS",
         "details": {
             "file": "./sandbox/test_batch/test_legacy.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "## Code Analysis:\n\n### Critical Issues and Bugs\n\n1.  **Python 2 Syntax:** The use of `print \"...\"` is the Python 2 statement syntax. If this code is executed using a Python 3 interpreter, it will raise a `SyntaxError`. (This is the most critical issue for modern compatibility.)\n\n### Style Violations\n\n1.  **Deprecated String Formatting:** The code uses the `%` operator for string formatting. This method is deprecated; modern Python standards recommend using f-strings (Python 3.6+) or the `.format()` method.\n2.  **Missing Docstring:** The function lacks a docstring (PEP 257) describing its purpose, arguments, and return value.\n3.  **Missing Type Hinting:** The function signature does not use type hints (PEP 484) for the `data` parameter or the return value (`True`).\n4.  **Ineffective Comment:** The comment `# Old way to format strings` is redundant and adds no value to the logic of the function."
+            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\ndef process_data(data):\n    # Old way to format strings\n    print \"Processing: %s\" % data \n    return True\n\n----------------\n",
+            "output_response": "**CRITICAL ISSUES & BUGS**\n\n1.  **Critical Syntax Error (Python 3 Incompatibility):** The `print` statement uses Python 2 syntax (`print \"...\"`). If executed in Python 3, this will result in a `SyntaxError`.\n\n**STYLE VIOLATIONS & BEST PRACTICES**\n\n2.  **Missing Docstring:** The function lacks a docstring (PEP 257 violation), making the code harder to understand and document automatically.\n3.  **Deprecated String Formatting:** The `%` operator is used for string formatting. Modern Python prefers ..."
         },
         "status": "SUCCESS"
     },
     {
-        "id": "2149e60e-5f59-43cb-baf0-6613719ee01e",
-        "timestamp": "2026-01-28T12:26:05.704240",
+        "id": "268ebf6e-0936-423e-9c66-27cc097145b5",
+        "timestamp": "2026-01-28T13:08:24.243164",
         "agent": "Fixer_Agent",
         "model": "models/gemini-flash-latest",
         "action": "FIX",
         "details": {
             "file": "./sandbox/test_batch/test_legacy.py",
             "attempt": 1,
-            "input_prompt": "Refactor Code (Standard)",
-            "output_response": "Code Generated"
+            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\ndef process_data(data):\n    # Old way to format strings\n    print \"Processing: %s\" % data \n    return True\n\n----------------\n",
+            "output_response": "Code Generated (See file content)"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "a56bd64e-1757-4f3f-aee0-7854a9c6a29a",
-        "timestamp": "2026-01-28T12:26:05.739687",
+        "id": "42220d4f-0a18-467b-abb0-a6b5d1727fe8",
+        "timestamp": "2026-01-28T13:08:24.273312",
         "agent": "Judge_Agent",
         "model": "System-Compiler",
         "action": "DEBUG",
         "details": {
             "file": "./sandbox/test_batch/test_legacy.py",
             "result": "PASS",
-            "input_prompt": "Syntax Check",
+            "input_prompt": "check_syntax('./sandbox/test_batch/test_legacy.py')",
             "output_response": "Valid Syntax"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "b1bade36-fe71-495d-a8ae-7471325f6bbb",
-        "timestamp": "2026-01-28T12:26:09.232789",
+        "id": "7640cc75-717f-44d7-bfbd-67c4950d9e6c",
+        "timestamp": "2026-01-28T13:09:22.119263",
         "agent": "Auditor_Agent",
         "model": "models/gemini-flash-latest",
         "action": "CODE_ANALYSIS",
         "details": {
             "file": "./sandbox/test_batch/test_logic.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "**Critical Issues & Bugs**\n\n1.  **Infinite Loop:** The variable `i` is never incremented inside the `while` loop, causing it to execute indefinitely (a severe functional bug).\n\n**Style Violations & Design Issues**\n\n1.  **Non-Idiomatic Counting:** Using a `while` loop for simple, definite iteration counts is less idiomatic in Python. A `for` loop utilizing `range(5)` is the preferred, safer, and cleaner approach.\n2.  **Redundant Comment:** The comment explicitly points out the bug but does not fix it, making the code misleadingly documented while remaining broken."
+            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\ndef count_to_five():\n    i = 0\n    while i < 5:\n        print(i)\n        # BUG: Forgot to increment i, infinite loop!\n\n----------------\n",
+            "output_response": "### Critical Issues and Bugs\n\n1.  **Infinite Loop (Critical Bug):** The loop counter variable (`i`) is initialized but never incremented within the `while` block, causing the condition (`i < 5`) to always evaluate as true.\n\n### Style and Maintenance Violations\n\n1.  **Missing Docstring (PEP 257):** The function lacks a docstring explaining its purpose, arguments, and return value.\n2.  **Explicit Unfixed Bug Comment:** The presence of an inline comment (`# BUG: Forgot to increment i, infinite loop..."
         },
         "status": "SUCCESS"
     },
     {
-        "id": "b9f1ca57-e9ba-4d16-94ff-2318518f3a89",
-        "timestamp": "2026-01-28T12:26:12.201889",
+        "id": "6e386ff3-383f-49ce-bd22-2e06dcc8a3ad",
+        "timestamp": "2026-01-28T13:09:25.130732",
         "agent": "Fixer_Agent",
         "model": "models/gemini-flash-latest",
         "action": "FIX",
         "details": {
             "file": "./sandbox/test_batch/test_logic.py",
             "attempt": 1,
-            "input_prompt": "Refactor Code (Standard)",
-            "output_response": "Code Generated"
+            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\ndef count_to_five():\n    i = 0\n    while i < 5:\n        print(i)\n        # BUG: Forgot to increment i, infinite loop!\n\n----------------\n",
+            "output_response": "Code Generated (See file content)"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "959c1dad-c33b-4837-96c6-1292f4760f5e",
-        "timestamp": "2026-01-28T12:26:12.224626",
+        "id": "cd777a48-d82e-46a6-9a8c-8f2b4543d288",
+        "timestamp": "2026-01-28T13:09:25.147828",
         "agent": "Judge_Agent",
         "model": "System-Compiler",
         "action": "DEBUG",
         "details": {
             "file": "./sandbox/test_batch/test_logic.py",
             "result": "PASS",
-            "input_prompt": "Syntax Check",
+            "input_prompt": "check_syntax('./sandbox/test_batch/test_logic.py')",
             "output_response": "Valid Syntax"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "8430797a-5c77-4f7a-8e97-efec7de29297",
-        "timestamp": "2026-01-28T12:26:16.410169",
+        "id": "29da2f78-0b9b-43fc-b4bf-fa4c92b84fbd",
+        "timestamp": "2026-01-28T13:09:50.426452",
         "agent": "Auditor_Agent",
         "model": "models/gemini-flash-latest",
         "action": "CODE_ANALYSIS",
         "details": {
             "file": "./sandbox/test_batch/test_security.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "**CRITICAL ISSUES (SECURITY & RELIABILITY)**\n\n1.  **Severe Security Vulnerability (RCE):** The use of `eval()` on uncontrolled `user_input` constitutes a critical Remote Code Execution (RCE) vulnerability. An attacker can execute arbitrary system commands, delete files, or steal information by passing malicious strings (e.g., `__import__('os').system('...')`).\n2.  **Lack of Input Validation/Sanitization:** There is no mechanism to ensure the input is restricted to mathematical operations; any valid Python code will be executed.\n3.  **Missing Error Handling:** The code will crash (raise exceptions like `SyntaxError`, `TypeError`, or `NameError`) if the input string is not a valid Python expression (e.g., if the user enters text or incomplete formulas).\n\n**BUGS AND DESIGN FLAWS**\n\n4.  **Misleading Function Name:** The name `calculate_price` implies a controlled arithmetic function, but the implementation using `eval` allows for general, unrestricted Python execution, violating the principle of least surprise.\n\n**STYLE VIOLATIONS (PEP 8)**\n\n5.  **Missing Docstring:** The function lacks a docstring explaining its purpose, parameters, and return value."
+            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\ndef calculate_price(user_input):\n    # DANGEROUS: executing raw string as code\n    return eval(user_input)\n\nprint(calculate_price(\"10 + 20\"))\n\n----------------\n",
+            "output_response": "### Critical Issues (Security and Safety)\n\n1.  **Remote Code Execution (RCE) Vulnerability:** The use of the built-in `eval()` function on unsanitized `user_input` is a catastrophic security flaw. An attacker can pass malicious Python code (e.g., system commands, file access) that will be executed with the permissions of the running application.\n\n### Bugs and Stability Issues\n\n2.  **Lack of Error Handling:** The function lacks a `try...except` block. If `user_input` contains invalid syntax, unde..."
         },
         "status": "SUCCESS"
     },
     {
-        "id": "3c973ac2-2323-4128-813a-ba84f79604db",
-        "timestamp": "2026-01-28T12:26:37.858377",
+        "id": "b826393e-f2a0-4f82-a760-43f100c95945",
+        "timestamp": "2026-01-28T13:09:58.648366",
         "agent": "Fixer_Agent",
         "model": "models/gemini-flash-latest",
         "action": "FIX",
         "details": {
             "file": "./sandbox/test_batch/test_security.py",
             "attempt": 1,
-            "input_prompt": "Refactor Code (Standard)",
-            "output_response": "Code Generated"
+            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\ndef calculate_price(user_input):\n    # DANGEROUS: executing raw string as code\n    return eval(user_input)\n\nprint(calculate_price(\"10 + 20\"))\n\n----------------\n",
+            "output_response": "Code Generated (See file content)"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "edbac301-39ab-40b0-bb86-115b482f8295",
-        "timestamp": "2026-01-28T12:26:37.894686",
+        "id": "285007f2-4134-4580-a374-1382d66e200a",
+        "timestamp": "2026-01-28T13:09:58.687256",
         "agent": "Judge_Agent",
         "model": "System-Compiler",
         "action": "DEBUG",
         "details": {
             "file": "./sandbox/test_batch/test_security.py",
             "result": "PASS",
-            "input_prompt": "Syntax Check",
+            "input_prompt": "check_syntax('./sandbox/test_batch/test_security.py')",
             "output_response": "Valid Syntax"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "ef8087df-d148-4db6-9dd6-da49cb4aa3a6",
-        "timestamp": "2026-01-28T12:29:21.609642",
+        "id": "0476c0fc-41d7-4c34-80c3-074217facc0f",
+        "timestamp": "2026-01-28T13:10:32.917386",
         "agent": "Auditor_Agent",
         "model": "models/gemini-flash-latest",
         "action": "CODE_ANALYSIS",
         "details": {
             "file": "./sandbox/test_batch/test_style.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "## Code Analysis Issues\n\n### Critical Issues & Bugs\n\n1.  **Unused Imports (Dead Code):** The modules `os` and `sys` are imported but never used, cluttering the namespace and making the code less readable/efficient.\n\n### Style Violations (PEP 8)\n\n1.  **Naming Convention:** The function name `F` is non-descriptive and violates PEP 8 (functions should be lowercase and descriptive, e.g., `add`).\n2.  **Import Formatting:** PEP 8 recommends placing each import on its own line (e.g., `import os` then `import sys`), rather than `import os,sys`.\n3.  **Whitespace in Calls:** There is excessive whitespace inside the parentheses of the function call (`F( 10,20 )`), violating PEP 8 rules for argument spacing.\n4.  **Function Definition:** While functional, condensing the function definition onto a single line without standard spacing is generally discouraged unless using a `lambda`."
+            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\nimport os,sys\ndef F(x,y): return x+y\nprint( F( 10,20 ) )\n\n----------------\n",
+            "output_response": "## Code Analysis: Issues and Violations\n\n### Critical Issues\n*   None.\n\n### Bugs\n*   None. The function works as intended (addition).\n\n### Style Violations and Redundancy\n1.  **Unused Imports:** The `os` and `sys` modules are imported but never used, resulting in unnecessary overhead (Dead code).\n2.  **Naming Convention:** The function name `F` is non-descriptive and violates PEP 8 (functions should use lowercase snake\\_case, e.g., `add`).\n3.  **Whitespace (Imports):** Multiple imports on a sing..."
         },
         "status": "SUCCESS"
     },
     {
-        "id": "97660993-33a2-4a62-8f68-a18f691aa242",
-        "timestamp": "2026-01-28T12:29:28.673596",
+        "id": "96deaaf7-fba4-4ded-8ebd-44b820821557",
+        "timestamp": "2026-01-28T13:10:36.997856",
+        "agent": "Fixer_Agent",
+        "model": "models/gemini-flash-latest",
+        "action": "FIX",
+        "details": {
+            "file": "./sandbox/test_batch/test_style.py",
+            "attempt": 1,
+            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\nimport os,sys\ndef F(x,y): return x+y\nprint( F( 10,20 ) )\n\n----------------\n",
+            "output_response": "Code Generated (See file content)"
+        },
+        "status": "SUCCESS"
+    },
+    {
+        "id": "a0a9ddf7-02ff-43c3-9b38-d4f630bb9028",
+        "timestamp": "2026-01-28T13:10:37.027161",
+        "agent": "Judge_Agent",
+        "model": "System-Compiler",
+        "action": "DEBUG",
+        "details": {
+            "file": "./sandbox/test_batch/test_style.py",
+            "result": "PASS",
+            "input_prompt": "check_syntax('./sandbox/test_batch/test_style.py')",
+            "output_response": "Valid Syntax"
+        },
+        "status": "SUCCESS"
+    },
+    {
+        "id": "d00913fc-0c92-4e6d-bf74-5ef64c4956a9",
+        "timestamp": "2026-01-28T13:11:57.495157",
         "agent": "Auditor_Agent",
         "model": "models/gemini-flash-latest",
         "action": "CODE_ANALYSIS",
         "details": {
             "file": "./sandbox/test_batch/test_syntax.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "**CRITICAL ISSUES (Syntax Errors / Bugs)**\n\n1.  **Missing Colon in Function Definition:** The `def greet(name)` line is missing the mandatory colon (`:`) required to terminate the function signature and begin the block.\n2.  **Incorrect Indentation:** The function body (`print(...)`) is not indented, which is a critical Python syntax requirement for defining code blocks.\n\n**STYLE VIOLATIONS (PEP 8)**\n\n3.  **Missing Docstring:** The function lacks a docstring explaining its purpose, parameters, and return value."
+            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\ndef greet(name)\nprint(\"Hello \" + name)\n\n----------------\n",
+            "output_response": "**Critical Issues & Bugs (Syntax Errors):**\n\n1.  **Missing Colon:** The function definition (`def greet(name)`) is missing the required colon (`:`) at the end of the signature. This is a fatal syntax error.\n2.  **Missing Indentation:** The function body (`print(...)`) is not indented. Python requires indentation (usually 4 spaces) to define code blocks, which will cause an `IndentationError` or `SyntaxError` when the file is parsed.\n\n**Style Violations (PEP 8):**\n\n3.  **Missing Docstring:** The ..."
         },
         "status": "SUCCESS"
     },
     {
-        "id": "0bd77ea0-197a-45d0-8a93-9469bed4a198",
-        "timestamp": "2026-01-28T12:32:42.100239",
-        "agent": "Auditor_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file": "./sandbox/test_batch/test_style.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "**Critical Issues**\n*   None identified. The code is trivial and executes without failure or securit..."
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "4d98952f-d5ea-4ea2-b9f6-15f4614f4ec9",
-        "timestamp": "2026-01-28T12:32:44.614765",
+        "id": "91fad1a4-c7e8-41f1-b85a-811f95e6df94",
+        "timestamp": "2026-01-28T13:12:01.541237",
         "agent": "Fixer_Agent",
         "model": "models/gemini-flash-latest",
         "action": "FIX",
         "details": {
-            "file": "./sandbox/test_batch/test_style.py",
+            "file": "./sandbox/test_batch/test_syntax.py",
             "attempt": 1,
-            "input_prompt": "Refactor Code (Standard)",
-            "output_response": "Code Generated"
+            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\ndef greet(name)\nprint(\"Hello \" + name)\n\n----------------\n",
+            "output_response": "Code Generated (See file content)"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "a7216f38-9ef6-469b-bf50-2783a1cd2e3d",
-        "timestamp": "2026-01-28T12:32:44.637657",
+        "id": "9efdc030-fbd5-4e66-a3b4-e56e1992188f",
+        "timestamp": "2026-01-28T13:12:01.562532",
         "agent": "Judge_Agent",
         "model": "System-Compiler",
         "action": "DEBUG",
         "details": {
-            "file": "./sandbox/test_batch/test_style.py",
+            "file": "./sandbox/test_batch/test_syntax.py",
             "result": "PASS",
-            "input_prompt": "Syntax Check",
+            "input_prompt": "check_syntax('./sandbox/test_batch/test_syntax.py')",
             "output_response": "Valid Syntax"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "5ae6d070-5cfb-49a5-ba30-2e19b86b2512",
-        "timestamp": "2026-01-28T12:32:48.623690",
+        "id": "3f2bb977-221a-4c0b-a61b-4ed1698b6f7b",
+        "timestamp": "2026-01-28T13:12:22.563245",
         "agent": "Auditor_Agent",
         "model": "models/gemini-flash-latest",
         "action": "CODE_ANALYSIS",
         "details": {
-            "file": "./sandbox/test_batch/test_syntax.py",
-            "input_prompt": "Analyze Code Issues",
-            "output_response": "## Critical Issues, Bugs, and Style Violations\n\n### Critical Issues (Syntax Errors)\n\n1.  **Missing C..."
+            "file": "./sandbox/test_batch/trap.py",
+            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\ndef calculate_square(number: int | float) -> int | float:\n    \"\"\"\n    Calculates the square of a given number.\n\n    Args:\n        number: The input number (integer or float).\n\n    Returns:\n        The square of the input number.\n    \"\"\"\n    return number * number\n\nif __name__ == \"__main__\":\n    # Example usage demonstrating the function\n    test_value = 5\n    result = calculate_square(test_value)\n    print(result)\n----------------\n",
+            "output_response": "## Analysis of Code Issues\n\nThe provided code is small, highly focused, and generally very clean. The issues identified are primarily related to best practices, compatibility, and style (PEP 8).\n\n### Critical Issues\n\n*   **None.** The function executes correctly and safely for its stated purpose.\n\n### Bugs (Logical or Runtime)\n\n*   **None.** The calculation logic (`number * number`) is mathematically correct.\n\n### Style Violations and Compatibility Issues\n\n1.  **Compatibility/Type Hinting:** The..."
+        },
+        "status": "SUCCESS"
+    },
+    {
+        "id": "2efcb7f9-1e8f-40d1-95d1-dcd04544f9e2",
+        "timestamp": "2026-01-28T13:12:29.383472",
+        "agent": "Fixer_Agent",
+        "model": "models/gemini-flash-latest",
+        "action": "FIX",
+        "details": {
+            "file": "./sandbox/test_batch/trap.py",
+            "attempt": 1,
+            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\ndef calculate_square(number: int | float) -> int | float:\n    \"\"\"\n    Calculates the square of a given number.\n\n    Args:\n        number: The input number (integer or float).\n\n    Returns:\n        The square of the input number.\n    \"\"\"\n    return number * number\n\nif __name__ == \"__main__\":\n    # Example usage demonstrating the function\n    test_value = 5\n    result = calculate_square(test_value)\n    print(result)\n----------------\n",
+            "output_response": "Code Generated (See file content)"
+        },
+        "status": "SUCCESS"
+    },
+    {
+        "id": "4c3e6a43-a6f4-4151-9378-fd2368e97e25",
+        "timestamp": "2026-01-28T13:12:29.416995",
+        "agent": "Judge_Agent",
+        "model": "System-Compiler",
+        "action": "DEBUG",
+        "details": {
+            "file": "./sandbox/test_batch/trap.py",
+            "result": "PASS",
+            "input_prompt": "check_syntax('./sandbox/test_batch/trap.py')",
+            "output_response": "Valid Syntax"
         },
         "status": "SUCCESS"
     }
