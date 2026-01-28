@@ -33,5 +33,57 @@
             "output_response": "Ready"
         },
         "status": "SUCCESS"
+    },
+    {
+        "id": "9d4b7817-321c-42b9-80cc-725fa5dddf7c",
+        "timestamp": "2026-01-28T10:25:58.312659",
+        "agent": "Data_Officer_Test",
+        "model": "Test-Model-1.0",
+        "action": "CODE_ANALYSIS",
+        "details": {
+            "file_analyzed": "test_file.py",
+            "input_prompt": "System Check",
+            "output_response": "System OK"
+        },
+        "status": "SUCCESS"
+    },
+    {
+        "id": "2d5fdb36-bbab-4e9a-9d5d-bcf3c301e5c4",
+        "timestamp": "2026-01-28T10:29:27.983686",
+        "agent": "Data_Officer_Verified",
+        "model": "Test-Model-1.0",
+        "action": "CODE_ANALYSIS",
+        "details": {
+            "file_analyzed": "test_file.py",
+            "input_prompt": "System Check",
+            "output_response": "System OK"
+        },
+        "status": "SUCCESS"
+    },
+    {
+        "id": "8597464c-fcfb-47d3-917f-1cb3ebfde3d6",
+        "timestamp": "2026-01-28T11:06:37.707643",
+        "agent": "Analyst_Agent",
+        "model": "models/gemini-flash-latest",
+        "action": "CODE_ANALYSIS",
+        "details": {
+            "file": "./sandbox/bad_code/dirty.py",
+            "input_prompt": "Analyze Code Issues",
+            "output_response": "**Critical Issues & Bugs**\n1.  **Side Effect in Calculation:** The function `calc` prints output (`\"calculating...\"`). Functions designed purely for calculation should typically avoid side effects like printing, violating the Single Responsibility Principle (SRP).\n2.  **No Bugs:** The code is functionally correct for addition.\n\n**Style Violations (PEP 8)**\n1.  **L2: Excessive Whitespace (E203):** Too many spaces inside the `print` call (`print(  \"calculating...\" )`).\n2.  **L3: Excessive Whitespace (E231/E225):** Poor spacing inside the function call arguments (`calc( 10,  20 )`). Specifically, spaces after the opening parenthesis, before the closing parenthesis, and excessive space after the comma.\n3.  **L1: Abbreviation:** The function name `calc` is overly abbreviated; `calculate` or `add` would be more descriptive. (Minor)."
+        },
+        "status": "SUCCESS"
+    },
+    {
+        "id": "98475f66-70ec-4785-a4a2-3676587564ad",
+        "timestamp": "2026-01-28T11:06:45.494615",
+        "agent": "Refactor_Agent",
+        "model": "models/gemini-flash-latest",
+        "action": "FIX",
+        "details": {
+            "file": "./sandbox/bad_code/dirty.py",
+            "input_prompt": "Refactor Code (Strict Mode)",
+            "output_response": "Code replaced with refactored version."
+        },
+        "status": "SUCCESS"
     }
 ]
