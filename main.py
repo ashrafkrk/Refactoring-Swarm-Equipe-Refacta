@@ -84,7 +84,7 @@ def process_file(file_path):
         return
 
     # --- 2. SELF-HEALING LOOP (Fix -> Test -> Retry) ---
-    MAX_RETRIES = 3
+    MAX_RETRIES = 10
     current_code = original_code
     error_context = "" 
 
@@ -167,7 +167,7 @@ def process_file(file_path):
             if attempt == MAX_RETRIES:
                 print("   ❌ Maximum retries reached. Reverting file.")
                 save_file_content(file_path, original_code)
-                
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--target_dir", type=str, required=True, help="Path to the folder to refactor")
