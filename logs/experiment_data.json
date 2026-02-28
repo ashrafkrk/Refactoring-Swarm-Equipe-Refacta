@@ -1,268 +1,123 @@
 [
     {
-        "id": "9e82e9b0-9b43-4a78-af43-d5d5ef848a2f",
-        "timestamp": "2025-12-26T01:26:41.177789",
-        "agent": "System",
-        "model": "unknown",
-        "action": "STARTUP",
-        "details": "Target: ./sandbox",
-        "status": "INFO"
-    },
-    {
-        "id": "bb72c99c-b4d3-48cd-81a3-85692c04ab53",
-        "timestamp": "2026-01-27T11:40:55.026762",
-        "agent": "System",
-        "model": "Setup",
-        "action": "DEBUG",
-        "details": {
-            "info": "Target: sandbox",
-            "input_prompt": "System Init",
-            "output_response": "Ready"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "9f8875a1-d234-4bb1-bb1c-ff3b8e5ec722",
-        "timestamp": "2026-01-28T13:08:20.165323",
+        "id": "00646e6b-40c7-4a88-8717-cd32d4570717",
+        "timestamp": "2026-02-28T23:31:49.051435",
         "agent": "Auditor_Agent",
         "model": "models/gemini-flash-latest",
         "action": "CODE_ANALYSIS",
         "details": {
-            "file": "./sandbox/test_batch/test_legacy.py",
-            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\ndef process_data(data):\n    # Old way to format strings\n    print \"Processing: %s\" % data \n    return True\n\n----------------\n",
-            "output_response": "**CRITICAL ISSUES & BUGS**\n\n1.  **Critical Syntax Error (Python 3 Incompatibility):** The `print` statement uses Python 2 syntax (`print \"...\"`). If executed in Python 3, this will result in a `SyntaxError`.\n\n**STYLE VIOLATIONS & BEST PRACTICES**\n\n2.  **Missing Docstring:** The function lacks a docstring (PEP 257 violation), making the code harder to understand and document automatically.\n3.  **Deprecated String Formatting:** The `%` operator is used for string formatting. Modern Python prefers ..."
+            "file": "./sandbox/hidden_dataset/bad_syntax.py",
+            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\ndef calculate_sum(a, b)  # Manque le deux-points\n    return a + b\n----------------\n",
+            "output_response": "**Critical Issues & Bugs**\n1.  **Syntax Error:** Missing colon (`:`) at the end of the `def` statement. This will prevent the code from executing.\n\n**Style & Design Violations**\n2.  **Missing Docstring:** The function lacks a description of its purpose, arguments, and return value (PEP 257).\n3.  **Missing Type Hints:** Parameters `a`, `b` and the return type are not annotated (e.g., `a: int, b: int -> int`).\n4.  **Language Inconsistency:** The code uses English identifiers but contains a French ..."
         },
         "status": "SUCCESS"
     },
     {
-        "id": "268ebf6e-0936-423e-9c66-27cc097145b5",
-        "timestamp": "2026-01-28T13:08:24.243164",
+        "id": "7c45a8f9-2172-4067-bb44-08c65cbd985b",
+        "timestamp": "2026-02-28T23:31:52.381956",
         "agent": "Fixer_Agent",
         "model": "models/gemini-flash-latest",
         "action": "FIX",
         "details": {
-            "file": "./sandbox/test_batch/test_legacy.py",
+            "file": "./sandbox/hidden_dataset/bad_syntax.py",
             "attempt": 1,
-            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\ndef process_data(data):\n    # Old way to format strings\n    print \"Processing: %s\" % data \n    return True\n\n----------------\n",
+            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\ndef calculate_sum(a, b)  # Manque le deux-points\n    return a + b\n----------------\n",
             "output_response": "Code Generated (See file content)"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "42220d4f-0a18-467b-abb0-a6b5d1727fe8",
-        "timestamp": "2026-01-28T13:08:24.273312",
+        "id": "bdd5b01f-6012-432a-ad1a-ad5b8c1c3d18",
+        "timestamp": "2026-02-28T23:31:52.486998",
         "agent": "Judge_Agent",
         "model": "System-Compiler",
         "action": "DEBUG",
         "details": {
-            "file": "./sandbox/test_batch/test_legacy.py",
+            "file": "./sandbox/hidden_dataset/bad_syntax.py",
             "result": "PASS",
-            "input_prompt": "check_syntax('./sandbox/test_batch/test_legacy.py')",
+            "input_prompt": "check_syntax('./sandbox/hidden_dataset/bad_syntax.py')",
             "output_response": "Valid Syntax"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "7640cc75-717f-44d7-bfbd-67c4950d9e6c",
-        "timestamp": "2026-01-28T13:09:22.119263",
+        "id": "1b29ace8-6e0b-4008-ab86-95441f944f56",
+        "timestamp": "2026-02-28T23:31:57.201557",
         "agent": "Auditor_Agent",
         "model": "models/gemini-flash-latest",
         "action": "CODE_ANALYSIS",
         "details": {
-            "file": "./sandbox/test_batch/test_logic.py",
-            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\ndef count_to_five():\n    i = 0\n    while i < 5:\n        print(i)\n        # BUG: Forgot to increment i, infinite loop!\n\n----------------\n",
-            "output_response": "### Critical Issues and Bugs\n\n1.  **Infinite Loop (Critical Bug):** The loop counter variable (`i`) is initialized but never incremented within the `while` block, causing the condition (`i < 5`) to always evaluate as true.\n\n### Style and Maintenance Violations\n\n1.  **Missing Docstring (PEP 257):** The function lacks a docstring explaining its purpose, arguments, and return value.\n2.  **Explicit Unfixed Bug Comment:** The presence of an inline comment (`# BUG: Forgot to increment i, infinite loop..."
+            "file": "./sandbox/hidden_dataset/logic_bug.py",
+            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\ndef count_down(n):\n    while n > 0:\n        print(n)\n        n += 1 # Bug : n augmente au lieu de diminuer\n----------------\n",
+            "output_response": "### Critical Issues and Bugs\n1.  **Infinite Loop:** Since `n` is incremented (`n += 1`) while the loop condition requires `n > 0`, the condition will never become false if the starting value is positive.\n2.  **Logic Error:** The function is named `count_down`, but it performs a \"count up\" by increasing the value of `n`.\n3.  **Missing Input Validation:** The code does not handle cases where `n` is not a number (e.g., a string), which would cause a `TypeError`.\n\n### Style Violations\n1.  **Missing ..."
         },
         "status": "SUCCESS"
     },
     {
-        "id": "6e386ff3-383f-49ce-bd22-2e06dcc8a3ad",
-        "timestamp": "2026-01-28T13:09:25.130732",
+        "id": "b6926307-9f77-4803-9acc-8b658b653ee9",
+        "timestamp": "2026-02-28T23:32:05.819970",
         "agent": "Fixer_Agent",
         "model": "models/gemini-flash-latest",
         "action": "FIX",
         "details": {
-            "file": "./sandbox/test_batch/test_logic.py",
+            "file": "./sandbox/hidden_dataset/logic_bug.py",
             "attempt": 1,
-            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\ndef count_to_five():\n    i = 0\n    while i < 5:\n        print(i)\n        # BUG: Forgot to increment i, infinite loop!\n\n----------------\n",
+            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\ndef count_down(n):\n    while n > 0:\n        print(n)\n        n += 1 # Bug : n augmente au lieu de diminuer\n----------------\n",
             "output_response": "Code Generated (See file content)"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "cd777a48-d82e-46a6-9a8c-8f2b4543d288",
-        "timestamp": "2026-01-28T13:09:25.147828",
+        "id": "3b7d9873-69b3-481d-8718-a7c25f112913",
+        "timestamp": "2026-02-28T23:32:05.881725",
         "agent": "Judge_Agent",
         "model": "System-Compiler",
         "action": "DEBUG",
         "details": {
-            "file": "./sandbox/test_batch/test_logic.py",
+            "file": "./sandbox/hidden_dataset/logic_bug.py",
             "result": "PASS",
-            "input_prompt": "check_syntax('./sandbox/test_batch/test_logic.py')",
+            "input_prompt": "check_syntax('./sandbox/hidden_dataset/logic_bug.py')",
             "output_response": "Valid Syntax"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "29da2f78-0b9b-43fc-b4bf-fa4c92b84fbd",
-        "timestamp": "2026-01-28T13:09:50.426452",
+        "id": "f776f894-5cf7-436b-bfcd-35d1778e362c",
+        "timestamp": "2026-02-28T23:32:10.657716",
         "agent": "Auditor_Agent",
         "model": "models/gemini-flash-latest",
         "action": "CODE_ANALYSIS",
         "details": {
-            "file": "./sandbox/test_batch/test_security.py",
-            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\ndef calculate_price(user_input):\n    # DANGEROUS: executing raw string as code\n    return eval(user_input)\n\nprint(calculate_price(\"10 + 20\"))\n\n----------------\n",
-            "output_response": "### Critical Issues (Security and Safety)\n\n1.  **Remote Code Execution (RCE) Vulnerability:** The use of the built-in `eval()` function on unsanitized `user_input` is a catastrophic security flaw. An attacker can pass malicious Python code (e.g., system commands, file access) that will be executed with the permissions of the running application.\n\n### Bugs and Stability Issues\n\n2.  **Lack of Error Handling:** The function lacks a `try...except` block. If `user_input` contains invalid syntax, unde..."
+            "file": "./sandbox/hidden_dataset/messy_code.py",
+            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\nx = 10\n# Variable mal nommée, pas de docstring, logique inutile\ndef f(z):\n    if z > 0:\n        if z < 100:\n            return True\n    return False\n----------------\n",
+            "output_response": "**Critical Issues & Bugs**\n*   **Unused Global Variable:** `x = 10` is defined but never used, polluting the global namespace.\n*   **Poor Naming Conventions:** Function name `f` and parameters/variables (`x`, `z`) are non-descriptive, making the code's purpose unclear.\n\n**Logic & Efficiency**\n*   **Redundant Nested Logic:** The nested `if` statements can be simplified into a single logical expression or a chained comparison (`0 < z < 100`).\n*   **Unnecessary Verbosity:** Manually returning `True..."
         },
         "status": "SUCCESS"
     },
     {
-        "id": "b826393e-f2a0-4f82-a760-43f100c95945",
-        "timestamp": "2026-01-28T13:09:58.648366",
+        "id": "69ac831e-3252-492e-a0dc-ff059899e58b",
+        "timestamp": "2026-02-28T23:32:17.465981",
         "agent": "Fixer_Agent",
         "model": "models/gemini-flash-latest",
         "action": "FIX",
         "details": {
-            "file": "./sandbox/test_batch/test_security.py",
+            "file": "./sandbox/hidden_dataset/messy_code.py",
             "attempt": 1,
-            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\ndef calculate_price(user_input):\n    # DANGEROUS: executing raw string as code\n    return eval(user_input)\n\nprint(calculate_price(\"10 + 20\"))\n\n----------------\n",
+            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\nx = 10\n# Variable mal nommée, pas de docstring, logique inutile\ndef f(z):\n    if z > 0:\n        if z < 100:\n            return True\n    return False\n----------------\n",
             "output_response": "Code Generated (See file content)"
         },
         "status": "SUCCESS"
     },
     {
-        "id": "285007f2-4134-4580-a374-1382d66e200a",
-        "timestamp": "2026-01-28T13:09:58.687256",
+        "id": "ed308cd2-690a-48d7-8eac-bb6138794851",
+        "timestamp": "2026-02-28T23:32:17.544819",
         "agent": "Judge_Agent",
         "model": "System-Compiler",
         "action": "DEBUG",
         "details": {
-            "file": "./sandbox/test_batch/test_security.py",
+            "file": "./sandbox/hidden_dataset/messy_code.py",
             "result": "PASS",
-            "input_prompt": "check_syntax('./sandbox/test_batch/test_security.py')",
-            "output_response": "Valid Syntax"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "0476c0fc-41d7-4c34-80c3-074217facc0f",
-        "timestamp": "2026-01-28T13:10:32.917386",
-        "agent": "Auditor_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file": "./sandbox/test_batch/test_style.py",
-            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\nimport os,sys\ndef F(x,y): return x+y\nprint( F( 10,20 ) )\n\n----------------\n",
-            "output_response": "## Code Analysis: Issues and Violations\n\n### Critical Issues\n*   None.\n\n### Bugs\n*   None. The function works as intended (addition).\n\n### Style Violations and Redundancy\n1.  **Unused Imports:** The `os` and `sys` modules are imported but never used, resulting in unnecessary overhead (Dead code).\n2.  **Naming Convention:** The function name `F` is non-descriptive and violates PEP 8 (functions should use lowercase snake\\_case, e.g., `add`).\n3.  **Whitespace (Imports):** Multiple imports on a sing..."
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "96deaaf7-fba4-4ded-8ebd-44b820821557",
-        "timestamp": "2026-01-28T13:10:36.997856",
-        "agent": "Fixer_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "FIX",
-        "details": {
-            "file": "./sandbox/test_batch/test_style.py",
-            "attempt": 1,
-            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\nimport os,sys\ndef F(x,y): return x+y\nprint( F( 10,20 ) )\n\n----------------\n",
-            "output_response": "Code Generated (See file content)"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "a0a9ddf7-02ff-43c3-9b38-d4f630bb9028",
-        "timestamp": "2026-01-28T13:10:37.027161",
-        "agent": "Judge_Agent",
-        "model": "System-Compiler",
-        "action": "DEBUG",
-        "details": {
-            "file": "./sandbox/test_batch/test_style.py",
-            "result": "PASS",
-            "input_prompt": "check_syntax('./sandbox/test_batch/test_style.py')",
-            "output_response": "Valid Syntax"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "d00913fc-0c92-4e6d-bf74-5ef64c4956a9",
-        "timestamp": "2026-01-28T13:11:57.495157",
-        "agent": "Auditor_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file": "./sandbox/test_batch/test_syntax.py",
-            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\n\ndef greet(name)\nprint(\"Hello \" + name)\n\n----------------\n",
-            "output_response": "**Critical Issues & Bugs (Syntax Errors):**\n\n1.  **Missing Colon:** The function definition (`def greet(name)`) is missing the required colon (`:`) at the end of the signature. This is a fatal syntax error.\n2.  **Missing Indentation:** The function body (`print(...)`) is not indented. Python requires indentation (usually 4 spaces) to define code blocks, which will cause an `IndentationError` or `SyntaxError` when the file is parsed.\n\n**Style Violations (PEP 8):**\n\n3.  **Missing Docstring:** The ..."
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "91fad1a4-c7e8-41f1-b85a-811f95e6df94",
-        "timestamp": "2026-01-28T13:12:01.541237",
-        "agent": "Fixer_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "FIX",
-        "details": {
-            "file": "./sandbox/test_batch/test_syntax.py",
-            "attempt": 1,
-            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\n\ndef greet(name)\nprint(\"Hello \" + name)\n\n----------------\n",
-            "output_response": "Code Generated (See file content)"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "9efdc030-fbd5-4e66-a3b4-e56e1992188f",
-        "timestamp": "2026-01-28T13:12:01.562532",
-        "agent": "Judge_Agent",
-        "model": "System-Compiler",
-        "action": "DEBUG",
-        "details": {
-            "file": "./sandbox/test_batch/test_syntax.py",
-            "result": "PASS",
-            "input_prompt": "check_syntax('./sandbox/test_batch/test_syntax.py')",
-            "output_response": "Valid Syntax"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "3f2bb977-221a-4c0b-a61b-4ed1698b6f7b",
-        "timestamp": "2026-01-28T13:12:22.563245",
-        "agent": "Auditor_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file": "./sandbox/test_batch/trap.py",
-            "input_prompt": "\nAnalyze the code below. List the critical issues, bugs, and style violations.\nBe concise. Do not rewrite the code yet. Just list the problems.\n\nCODE TO ANALYZE:\n----------------\ndef calculate_square(number: int | float) -> int | float:\n    \"\"\"\n    Calculates the square of a given number.\n\n    Args:\n        number: The input number (integer or float).\n\n    Returns:\n        The square of the input number.\n    \"\"\"\n    return number * number\n\nif __name__ == \"__main__\":\n    # Example usage demonstrating the function\n    test_value = 5\n    result = calculate_square(test_value)\n    print(result)\n----------------\n",
-            "output_response": "## Analysis of Code Issues\n\nThe provided code is small, highly focused, and generally very clean. The issues identified are primarily related to best practices, compatibility, and style (PEP 8).\n\n### Critical Issues\n\n*   **None.** The function executes correctly and safely for its stated purpose.\n\n### Bugs (Logical or Runtime)\n\n*   **None.** The calculation logic (`number * number`) is mathematically correct.\n\n### Style Violations and Compatibility Issues\n\n1.  **Compatibility/Type Hinting:** The..."
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "2efcb7f9-1e8f-40d1-95d1-dcd04544f9e2",
-        "timestamp": "2026-01-28T13:12:29.383472",
-        "agent": "Fixer_Agent",
-        "model": "models/gemini-flash-latest",
-        "action": "FIX",
-        "details": {
-            "file": "./sandbox/test_batch/trap.py",
-            "attempt": 1,
-            "input_prompt": "\nYou are an Expert Senior Software Engineer and Code Auditor.\nYour mission is to analyze legacy code and refactor it to meet modern standards.\nYou prioritize:\n1. Security (No vulnerabilities).\n2. Performance (Optimized logic).\n3. Readability (Clean Code principles, PEP8 for Python).\n4. Maintainability (Type hints, Docstrings).\n\n\nRefactor the code below to fix all bugs, improve styling, and add comments.\n\nSTRICT OUTPUT RULES:\n1. Return ONLY the valid source code.\n2. Do NOT use Markdown code blocks (no ```python ... ```).\n3. Do NOT include any conversational text (no \"Here is the code\", no \"I fixed it\").\n4. The output must be ready to save directly into a file and run immediately.\n\nCODE TO REFACTOR:\n----------------\ndef calculate_square(number: int | float) -> int | float:\n    \"\"\"\n    Calculates the square of a given number.\n\n    Args:\n        number: The input number (integer or float).\n\n    Returns:\n        The square of the input number.\n    \"\"\"\n    return number * number\n\nif __name__ == \"__main__\":\n    # Example usage demonstrating the function\n    test_value = 5\n    result = calculate_square(test_value)\n    print(result)\n----------------\n",
-            "output_response": "Code Generated (See file content)"
-        },
-        "status": "SUCCESS"
-    },
-    {
-        "id": "4c3e6a43-a6f4-4151-9378-fd2368e97e25",
-        "timestamp": "2026-01-28T13:12:29.416995",
-        "agent": "Judge_Agent",
-        "model": "System-Compiler",
-        "action": "DEBUG",
-        "details": {
-            "file": "./sandbox/test_batch/trap.py",
-            "result": "PASS",
-            "input_prompt": "check_syntax('./sandbox/test_batch/trap.py')",
+            "input_prompt": "check_syntax('./sandbox/hidden_dataset/messy_code.py')",
             "output_response": "Valid Syntax"
         },
         "status": "SUCCESS"
